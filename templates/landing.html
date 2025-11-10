@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumePilot - AI-Powered Resume Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">✈️</span>
+                <span class="logo-text">ResumePilot</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="{{ url_for('dashboard') }}" class="dashboard-btn">Dashboard</a></li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <div class="theme-toggle-slider">🌙</div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Transform your career with <span class="gradient-text">AI-powered</span> resume optimization
+                </h1>
+                <p class="hero-subtitle">
+                    Beat ATS systems, land more interviews, and get your dream job.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                        Start Generating
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="#features" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card card-1">
+                    <div class="card-icon">📄</div>
+                    <div class="card-text">Resume Generated</div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="card-icon">✓</div>
+                    <div class="card-text">ATS Optimized</div>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-text">98% Match Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose ResumePilot?</h2>
+                <p class="section-subtitle">Our AI-powered platform gives you everything you need to create winning resumes and cover letters.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="#E8F4FF"/>
+                            <path d="M20 12L24 16L20 20M16 20L12 16L16 12" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 26H28" stroke="#0066FF" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">ATS Optimization</h3>
+                    <p class="feature-description">Advanced AI algorithms analyze job descriptions and optimize your resume for Applicant Tracking Systems.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="#FFF4E8"/>
+                            <path d="M20 28C24.4183 28 28 24.4183 28 20C28 15.5817 24.4183 12 20 12C15.5817 12 12 15.5817 12 20C12 24.4183 15.5817 28 20 28Z" stroke="#FF9500" stroke-width="2"/>
+                            <path d="M20 16V20L23 23" stroke="#FF9500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Suggestions</h3>
+                    <p class="feature-description">Get intelligent recommendations to improve your resume content and increase interview chances.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="#F0E8FF"/>
+                            <path d="M14 12H26C27.1046 12 28 12.8954 28 14V26C28 27.1046 27.1046 28 26 28H14C12.8954 28 12 27.1046 12 26V14C12 12.8954 12.8954 12 14 12Z" stroke="#8B5CF6" stroke-width="2"/>
+                            <path d="M16 18H24M16 22H22" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Instant Cover Letters</h3>
+                    <p class="feature-description">Generate personalized cover letters that match your resume and the job requirements perfectly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Trusted by Professionals Worldwide</h2>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Resumes Optimized</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">ATS Pass Rate</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">AI Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-container">
+            <h2 class="cta-title">Ready to Transform Your Career?</h2>
+            <p class="cta-subtitle">Join thousands of professionals who landed their dream jobs</p>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-large">
+                Get Started Now
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-icon">✈️</span>
+                    <span class="logo-text">ResumePilot</span>
+                </div>
+                <p class="footer-text">AI-powered resume and cover letter generation</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ResumePilot. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='landing.js') }}"></script>
+</body>
+</html>

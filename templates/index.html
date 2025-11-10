@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ResumePilot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('landing') }}" class="logo">
+                <span class="logo-text">ResumePilot</span>
+            </a>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <div class="theme-toggle-slider">🌙</div>
+                </button>
+                <a href="{{ url_for('landing') }}" class="back-home">← Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Resume & Cover Letter Generator</h1>
+            <p>Paste your LinkedIn profile content to get started</p>
+        </header>
+
+        <main>
+            <div class="generator-card">
+                <div class="step-indicator">
+                    <div class="step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">LinkedIn Data</div>
+                    </div>
+                    <div class="step-divider"></div>
+                    <div class="step" id="step-2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Generate Resume</div>
+                    </div>
+                    <div class="step-divider"></div>
+                    <div class="step" id="step-3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Cover Letter</div>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <form id="resumeForm">
+                        <!-- Input Method Selection -->
+                        <div class="form-group">
+                            <label class="section-label">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M9 2C13.97 2 18 6.03 18 11C18 15.97 13.97 20 9 20C4.03 20 0 15.97 0 11C0 6.03 4.03 2 9 2Z" fill="#0071E3" opacity="0.1"/>
+                                    <circle cx="9" cy="11" r="7" stroke="#0071E3" stroke-width="2"/>
+                                </svg>
+                                Choose Input Method
+                            </label>
+                            <div class="input-method-selector">
+                                <div class="method-option">
+                                    <input type="radio" id="method_paste" name="input_method" value="paste" checked>
+                                    <label for="method_paste">
+                                        <div class="method-card">
+                                            <div class="method-icon">📋</div>
+                                            <div class="method-info">
+                                                <h4>Paste LinkedIn Data</h4>
+                                                <p>Copy & paste your profile</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="method-option">
+                                    <input type="radio" id="method_manual" name="input_method" value="manual">
+                                    <label for="method_manual">
+                                        <div class="method-card">
+                                            <div class="method-icon">✍️</div>
+                                            <div class="method-info">
+                                                <h4>Manual Entry</h4>
+                                                <p>Fill in your details</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Template Selection -->
+                        <div class="form-group">
+                            <label for="template_select">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M3 4C3 3.44772 3.44772 3 4 3H16C16.5523 3 17 3.44772 17 4V16C17 16.5523 16.5523 17 16 17H4C3.44772 17 3 16.5523 3 16V4Z" stroke="#0071E3" stroke-width="2"/>
+                                    <path d="M6 7H14M6 10H11M6 13H13" stroke="#0071E3" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                Choose Resume Template
+                            </label>
+                            <div class="template-selector">
+                                <div class="template-option" data-template="modern">
+                                    <input type="radio" id="template_modern" name="template" value="modern" checked>
+                                    <label for="template_modern">
+                                        <div class="template-card">
+                                            <div class="template-preview modern-preview">
+                                                <div class="preview-header" style="background: #0071E3;"></div>
+                                                <div class="preview-line"></div>
+                                                <div class="preview-line short"></div>
+                                            </div>
+                                            <div class="template-info">
+                                                <h4>Modern</h4>
+                                                <p>Clean design with blue accents</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="template-option" data-template="classic">
+                                    <input type="radio" id="template_classic" name="template" value="classic">
+                                    <label for="template_classic">
+                                        <div class="template-card">
+                                            <div class="template-preview classic-preview">
+                                                <div class="preview-header" style="background: #000;"></div>
+                                                <div class="preview-line"></div>
+                                                <div class="preview-line short"></div>
+                                            </div>
+                                            <div class="template-info">
+                                                <h4>Classic</h4>
+                                                <p>Traditional black & white</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="template-option" data-template="executive">
+                                    <input type="radio" id="template_executive" name="template" value="executive">
+                                    <label for="template_executive">
+                                        <div class="template-card">
+                                            <div class="template-preview executive-preview">
+                                                <div class="preview-header" style="background: #2c3e50;"></div>
+                                                <div class="preview-line"></div>
+                                                <div class="preview-line short"></div>
+                                            </div>
+                                            <div class="template-info">
+                                                <h4>Executive</h4>
+                                                <p>Professional and sophisticated</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="template-option" data-template="creative">
+                                    <input type="radio" id="template_creative" name="template" value="creative">
+                                    <label for="template_creative">
+                                        <div class="template-card">
+                                            <div class="template-preview creative-preview">
+                                                <div class="preview-header" style="background: linear-gradient(135deg, #6366F1, #EC4899);"></div>
+                                                <div class="preview-line"></div>
+                                                <div class="preview-line short"></div>
+                                            </div>
+                                            <div class="template-info">
+                                                <h4>Creative</h4>
+                                                <p>Colorful and vibrant</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PASTE METHOD FIELDS -->
+                        <div id="pasteFields" class="input-fields">
+                            <div class="form-group">
+                                <label for="linkedin_url_dummy">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" fill="#0071E3"/>
+                                        <path d="M10 5v5l3 3" stroke="#0071E3" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    LinkedIn Profile URL
+                                </label>
+                                <input 
+                                    type="url" 
+                                    id="linkedin_url_dummy" 
+                                    name="linkedin_url_dummy" 
+                                    placeholder="https://www.linkedin.com/in/your-profile/"
+                                    class="url-input"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="linkedin_text">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M17 3H3C1.89543 3 1 3.89543 1 5V15C1 16.1046 1.89543 17 3 17H17C18.1046 17 19 16.1046 19 15V5C19 3.89543 18.1046 3 17 3Z" stroke="#6366F1" stroke-width="2"/>
+                                        <path d="M5 8H15M5 12H12" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    Paste Your LinkedIn Profile Content
+                                </label>
+                                <textarea 
+                                    id="linkedin_text" 
+                                    name="linkedin_text" 
+                                    rows="10"
+                                    placeholder="1. Go to your LinkedIn profile&#10;2. Press Ctrl+A (or Cmd+A on Mac) to select all&#10;3. Press Ctrl+C (or Cmd+C on Mac) to copy&#10;4. Paste here (Ctrl+V or Cmd+V)"
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <!-- MANUAL ENTRY FIELDS -->
+                        <div id="manualFields" class="input-fields" style="display: none;">
+                            <div class="manual-entry-grid">
+                                <!-- Personal Information -->
+                                <div class="manual-section">
+                                    <h4 class="manual-section-title">👤 Personal Information</h4>
+                                    <div class="form-group">
+                                        <label for="manual_name">Full Name *</label>
+                                        <input type="text" id="manual_name" placeholder="John Doe" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual_headline">Professional Headline *</label>
+                                        <input type="text" id="manual_headline" placeholder="Software Engineer | Full Stack Developer" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual_email">Email</label>
+                                        <input type="email" id="manual_email" placeholder="john.doe@email.com" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual_phone">Phone</label>
+                                        <input type="tel" id="manual_phone" placeholder="+1 (555) 123-4567" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual_location">Location</label>
+                                        <input type="text" id="manual_location" placeholder="San Francisco, CA" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual_linkedin_url">LinkedIn URL</label>
+                                        <input type="url" id="manual_linkedin_url" placeholder="https://linkedin.com/in/yourprofile" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manual_github">GitHub URL</label>
+                                        <input type="url" id="manual_github" placeholder="https://github.com/username" />
+                                    </div>
+                                </div>
+
+                                <!-- Professional Summary -->
+                                <div class="manual-section">
+                                    <h4 class="manual-section-title">📝 Professional Summary</h4>
+                                    <div class="form-group">
+                                        <label for="manual_about">About / Summary</label>
+                                        <textarea id="manual_about" rows="4" placeholder="Brief professional summary highlighting your expertise and career goals..."></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Experience -->
+                                <div class="manual-section">
+                                    <h4 class="manual-section-title">💼 Work Experience</h4>
+                                    <div id="experienceContainer">
+                                        <div class="experience-entry">
+                                            <div class="form-group">
+                                                <label>Job Title *</label>
+                                                <input type="text" class="exp-title" placeholder="Senior Software Engineer" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Company *</label>
+                                                <input type="text" class="exp-company" placeholder="Tech Corp" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Duration</label>
+                                                <input type="text" class="exp-duration" placeholder="Jan 2020 - Present" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <textarea class="exp-description" rows="3" placeholder="Key responsibilities and achievements..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="addExperienceBtn" class="btn-add-field">+ Add More Experience</button>
+                                </div>
+
+                                <!-- Education -->
+                                <div class="manual-section">
+                                    <h4 class="manual-section-title">🎓 Education</h4>
+                                    <div id="educationContainer">
+                                        <div class="education-entry">
+                                            <div class="form-group">
+                                                <label>School / University *</label>
+                                                <input type="text" class="edu-school" placeholder="University Name" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Degree</label>
+                                                <input type="text" class="edu-degree" placeholder="Bachelor of Science" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Field of Study</label>
+                                                <input type="text" class="edu-field" placeholder="Computer Science" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Years</label>
+                                                <input type="text" class="edu-dates" placeholder="2016 - 2020" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="addEducationBtn" class="btn-add-field">+ Add More Education</button>
+                                </div>
+
+                                <!-- Skills -->
+                                <div class="manual-section">
+                                    <h4 class="manual-section-title">⚡ Skills</h4>
+                                    <div class="form-group">
+                                        <label for="manual_skills">Skills (comma-separated)</label>
+                                        <textarea id="manual_skills" rows="3" placeholder="JavaScript, Python, React, Node.js, Docker, AWS, Git"></textarea>
+                                        <p class="field-hint">Enter skills separated by commas</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="generateBtn" class="btn-primary">
+                            <span class="btn-text">Generate Resume</span>
+                            <span class="spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+
+                    <div id="message" class="message" style="display: none;"></div>
+                    
+                    <div id="downloadSection" class="result-section" style="display: none;">
+                        <div class="success-icon">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                <circle cx="30" cy="30" r="30" fill="#10B981" opacity="0.1"/>
+                                <path d="M20 30L26 36L40 22" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Resume Generated Successfully!</h3>
+                        
+                        <!-- ATS Score Display -->
+                        <div id="atsScoreContainer" class="ats-score-container">
+                            <div class="ats-score-header">
+                                <h4>📊 ATS Compatibility Score</h4>
+                                <button id="refreshAtsBtn" class="btn-refresh-ats" title="Refresh ATS Score">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                        <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div id="atsLoadingState" class="ats-loading">
+                                <div class="spinner"></div>
+                                <p>Analyzing your resume...</p>
+                            </div>
+                            
+                            <div id="atsScoreContent" class="ats-score-content" style="display: none;">
+                                <div class="ats-overall-score">
+                                    <div class="score-circle">
+                                        <svg class="score-ring" viewBox="0 0 120 120">
+                                            <circle class="score-ring-background" cx="60" cy="60" r="50" />
+                                            <circle id="scoreRingProgress" class="score-ring-progress" cx="60" cy="60" r="50" />
+                                        </svg>
+                                        <div class="score-text">
+                                            <span id="atsScoreValue" class="score-value">0</span>
+                                            <span class="score-label">ATS Score</span>
+                                        </div>
+                                    </div>
+                                    <div id="atsRating" class="ats-rating">Good</div>
+                                </div>
+                                
+                                <div class="ats-categories">
+                                    <h5>Category Breakdown</h5>
+                                    <div class="category-scores">
+                                        <div class="category-item">
+                                            <div class="category-label">Formatting</div>
+                                            <div class="category-bar">
+                                                <div id="formattingBar" class="category-progress" style="width: 0%"></div>
+                                            </div>
+                                            <div id="formattingScore" class="category-score">0</div>
+                                        </div>
+                                        <div class="category-item">
+                                            <div class="category-label">Keywords</div>
+                                            <div class="category-bar">
+                                                <div id="keywordsBar" class="category-progress" style="width: 0%"></div>
+                                            </div>
+                                            <div id="keywordsScore" class="category-score">0</div>
+                                        </div>
+                                        <div class="category-item">
+                                            <div class="category-label">Experience</div>
+                                            <div class="category-bar">
+                                                <div id="experienceBar" class="category-progress" style="width: 0%"></div>
+                                            </div>
+                                            <div id="experienceScore" class="category-score">0</div>
+                                        </div>
+                                        <div class="category-item">
+                                            <div class="category-label">Skills</div>
+                                            <div class="category-bar">
+                                                <div id="skillsBar" class="category-progress" style="width: 0%"></div>
+                                            </div>
+                                            <div id="skillsScore" class="category-score">0</div>
+                                        </div>
+                                        <div class="category-item">
+                                            <div class="category-label">Education</div>
+                                            <div class="category-bar">
+                                                <div id="educationBar" class="category-progress" style="width: 0%"></div>
+                                            </div>
+                                            <div id="educationScore" class="category-score">0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="ats-details">
+                                    <div class="ats-strengths">
+                                        <h5>✅ Strengths</h5>
+                                        <ul id="atsStrengthsList"></ul>
+                                    </div>
+                                    <div class="ats-improvements">
+                                        <h5>💡 Improvements</h5>
+                                        <ul id="atsImprovementsList"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- PDF Preview -->
+                        <div class="pdf-preview-container">
+                            <div class="pdf-preview-header">
+                                <h4>📄 Resume Preview</h4>
+                                <div class="pdf-preview-controls">
+                                    <button class="pdf-control-btn" onclick="document.getElementById('resumeViewer').requestFullscreen()">⛶ Fullscreen</button>
+                                </div>
+                            </div>
+                            <iframe id="resumeViewer" class="pdf-viewer" type="application/pdf"></iframe>
+                        </div>
+                        
+                        <a id="downloadBtn" href="#" class="btn-download">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 14L6 10M10 14L14 10M10 14V2M18 18H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Download Resume PDF
+                        </a>
+                        
+                        <div class="cover-letter-prompt">
+                            <div class="divider">
+                                <span>Next Steps</span>
+                            </div>
+                            <h4>What would you like to do next?</h4>
+                            <div class="action-buttons">
+                                <button id="showSkillGapBtn" class="btn-secondary">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M13 7L9 11L7 9M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                    Analyze Skill Gaps
+                                </button>
+                                <button id="showCareerPathBtn" class="btn-secondary">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M3 10L8 5L12 9L17 4M17 4V9M17 4H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Career Path Advisor
+                                </button>
+                                <button id="showInterviewQuestionsBtn" class="btn-secondary">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Interview Questions
+                                </button>
+                                <button id="showCoverLetterBtn" class="btn-secondary">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M14 3H6C4.89543 3 4 3.89543 4 5V17L8 14L12 17L16 14V5C16 3.89543 15.1046 3 14 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Create Cover Letter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skill Gap Analysis Section -->
+                <div id="skillGapSection" class="skill-gap-container" style="display: none;">
+                    <div class="section-header">
+                        <h3>🎯 Skill Gap Analysis</h3>
+                        <p>Compare your skills against a job description to identify areas for improvement</p>
+                    </div>
+                    
+                    <form id="skillGapForm">
+                        <div class="form-group">
+                            <label for="skill_gap_job_description">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M14 3H6C4.89543 3 4 3.89543 4 5V15C4 16.1046 4.89543 17 6 17H14C15.1046 17 16 16.1046 16 15V5C16 3.89543 15.1046 3 14 3Z" stroke="#0071E3" stroke-width="2"/>
+                                    <path d="M7 8H13M7 11H13M7 14H10" stroke="#0071E3" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                Job Description
+                            </label>
+                            <textarea 
+                                id="skill_gap_job_description" 
+                                name="skill_gap_job_description" 
+                                rows="8"
+                                placeholder="Paste the job description for the role you're interested in. Include required skills, experience, and qualifications." 
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" id="analyzeSkillGapBtn" class="btn-primary">
+                            <span class="btn-text">Analyze Skill Gap</span>
+                            <span class="spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+
+                    <div id="skillGapMessage" class="message" style="display: none;"></div>
+                    
+                    <div id="skillGapResults" class="skill-gap-results" style="display: none;">
+                        <div class="skill-gap-score-section">
+                            <div class="skill-match-circle">
+                                <svg class="skill-score-ring" viewBox="0 0 120 120">
+                                    <circle class="skill-ring-background" cx="60" cy="60" r="50" />
+                                    <circle id="skillRingProgress" class="skill-ring-progress" cx="60" cy="60" r="50" />
+                                </svg>
+                                <div class="skill-score-text">
+                                    <span id="skillGapScore" class="skill-score-value">0</span>
+                                    <span class="skill-score-label">Match Score</span>
+                                </div>
+                            </div>
+                            <div id="skillGapSummary" class="skill-gap-summary"></div>
+                        </div>
+
+                        <div class="skill-breakdown">
+                            <div class="skill-category">
+                                <h4>✅ Matching Skills</h4>
+                                <div id="matchingSkills" class="skill-tags"></div>
+                            </div>
+                            <div class="skill-category">
+                                <h4>⚠️ Missing Skills</h4>
+                                <div id="missingSkills" class="skill-tags missing"></div>
+                            </div>
+                            <div class="skill-category">
+                                <h4>🔶 Partially Matched</h4>
+                                <div id="partialSkills" class="skill-tags partial"></div>
+                            </div>
+                        </div>
+
+                        <div class="recommendations-section">
+                            <h4>💡 Recommendations</h4>
+                            <ul id="recommendationsList"></ul>
+                        </div>
+
+                        <div class="learning-resources-section" id="learningResourcesSection" style="display: none;">
+                            <h4>📚 Learning Resources</h4>
+                            <div id="learningResourcesList"></div>
+                        </div>
+
+                        <div class="experience-gap-section" id="experienceGapSection">
+                            <h4>⏱️ Experience Gap</h4>
+                            <div id="experienceGapContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="coverLetterSection" class="cover-letter-container" style="display: none;">
+                    <div class="section-header">
+                        <h3>Generate Cover Letter</h3>
+                        <p>Paste the job description below to create a tailored cover letter</p>
+                    </div>
+                    
+                    <form id="coverLetterForm">
+                        <div class="form-group">
+                            <label for="job_description">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M14 3H6C4.89543 3 4 3.89543 4 5V15C4 16.1046 4.89543 17 6 17H14C15.1046 17 16 16.1046 16 15V5C16 3.89543 15.1046 3 14 3Z" stroke="#6366F1" stroke-width="2"/>
+                                    <path d="M7 8H13M7 11H13M7 14H10" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                Job Description
+                            </label>
+                            <textarea 
+                                id="job_description" 
+                                name="job_description" 
+                                rows="8"
+                                placeholder="Paste the job description here. Include details about the role, responsibilities, requirements, and company information for a more personalized cover letter." 
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" id="generateCoverLetterBtn" class="btn-primary">
+                            <span class="btn-text">Generate Cover Letter</span>
+                            <span class="spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+
+                    <div id="coverLetterMessage" class="message" style="display: none;"></div>
+                    
+                    <div id="downloadCoverLetterSection" class="result-section" style="display: none;">
+                        <div class="success-icon">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                <circle cx="30" cy="30" r="30" fill="#10B981" opacity="0.1"/>
+                                <path d="M20 30L26 36L40 22" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Cover Letter Generated Successfully!</h3>
+                        
+                        <!-- Cover Letter PDF Preview -->
+                        <div class="pdf-preview-container">
+                            <div class="pdf-preview-header">
+                                <h4>📝 Cover Letter Preview</h4>
+                                <div class="pdf-preview-controls">
+                                    <button class="pdf-control-btn" onclick="document.getElementById('coverLetterViewer').requestFullscreen()">⛶ Fullscreen</button>
+                                </div>
+                            </div>
+                            <iframe id="coverLetterViewer" class="pdf-viewer" type="application/pdf"></iframe>
+                        </div>
+                        
+                        <a id="downloadCoverLetterBtn" href="#" class="btn-download">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 14L6 10M10 14L14 10M10 14V2M18 18H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Download Cover Letter PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Path Advisor Section -->
+            <div id="careerPathSection" class="career-path-container" style="display: none;">
+                <div class="section-header">
+                    <h3>🚀 Career Path Advisor</h3>
+                    <p>Get personalized career guidance and plan your professional journey</p>
+                </div>
+
+                <div class="career-input-section">
+                    <form id="careerPathForm">
+                        <div class="form-group">
+                            <label for="target_role">Target Role (Optional)</label>
+                            <input type="text" id="target_role" placeholder="e.g., Engineering Manager, Senior Developer">
+                            <p class="field-hint">Leave blank for general career progression recommendations</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="years_ahead">Planning Horizon</label>
+                            <select id="years_ahead">
+                                <option value="3">3 Years</option>
+                                <option value="5" selected>5 Years</option>
+                                <option value="7">7 Years</option>
+                                <option value="10">10 Years</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" id="analyzeCareerPathBtn" class="btn-primary">
+                            <span class="btn-text">Analyze Career Path</span>
+                            <span class="spinner" style="display: none;">⏳</span>
+                        </button>
+                    </form>
+
+                    <div id="careerPathMessage" class="message" style="display: none;"></div>
+                </div>
+
+                <div id="careerPathResults" class="career-path-results" style="display: none;">
+                    <!-- Career Level -->
+                    <div class="career-section">
+                        <h4>📊 Current Career Level</h4>
+                        <div class="career-level-badge" id="currentLevel">Analyzing...</div>
+                    </div>
+
+                    <!-- Next Role Suggestions -->
+                    <div class="career-section">
+                        <h4>🎯 Recommended Next Roles</h4>
+                        <div id="nextRolesList" class="next-roles-grid"></div>
+                    </div>
+
+                    <!-- Skill Roadmap -->
+                    <div class="career-section">
+                        <h4>📚 Skill Development Roadmap</h4>
+                        <div class="skill-roadmap-tabs">
+                            <button class="roadmap-tab active" data-phase="immediate">Immediate (0-6 months)</button>
+                            <button class="roadmap-tab" data-phase="short">Short-term (6-12 months)</button>
+                            <button class="roadmap-tab" data-phase="long">Long-term (1-3 years)</button>
+                        </div>
+                        <div id="skillRoadmapImmediate" class="roadmap-content active"></div>
+                        <div id="skillRoadmapShort" class="roadmap-content"></div>
+                        <div id="skillRoadmapLong" class="roadmap-content"></div>
+                    </div>
+
+                    <!-- Industry Trends -->
+                    <div class="career-section">
+                        <h4>📈 Industry Trends & Market Insights</h4>
+                        <div id="industryTrends" class="trends-grid"></div>
+                    </div>
+
+                    <!-- Career Timeline -->
+                    <div class="career-section">
+                        <h4>🗓️ Your Career Timeline</h4>
+                        <div id="careerTimeline" class="timeline-container"></div>
+                    </div>
+
+                    <!-- Alternative Paths -->
+                    <div class="career-section">
+                        <h4>🔀 Alternative Career Paths</h4>
+                        <div id="alternativePaths" class="alternative-paths-grid"></div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="career-section">
+                        <h4>🏆 Recommended Certifications</h4>
+                        <div id="certificationsList" class="certifications-grid"></div>
+                    </div>
+
+                    <!-- Networking Strategy -->
+                    <div class="career-section">
+                        <h4>🤝 Networking Strategy</h4>
+                        <div id="networkingStrategy" class="networking-content"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <div class="info-panel">
+            <h3>How it works</h3>
+            <div class="steps-list">
+                <div class="info-step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4>Copy LinkedIn Profile</h4>
+                        <p>Open your LinkedIn profile and copy all content (Ctrl+A, Ctrl+C)</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4>Generate Resume</h4>
+                        <p>Paste the content and let AI create your professional resume</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4>Create Cover Letter</h4>
+                        <p>Optionally add a job description for a tailored cover letter</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interview Questions Generator Section -->
+            <div id="interviewQuestionsSection" class="interview-questions-container" style="display: none;">
+                <div class="section-header">
+                    <h3>💼 Interview Question Generator</h3>
+                    <p>Get personalized interview questions based on your profile and target job</p>
+                </div>
+
+                <div class="interview-input-section">
+                    <form id="interviewQuestionsForm">
+                        <div class="form-group">
+                            <label for="interview_job_description">Job Description (Optional but Recommended)</label>
+                            <textarea id="interview_job_description" rows="6" 
+                                placeholder="Paste the job description here for highly targeted questions. If left blank, we'll generate general questions based on your profile."></textarea>
+                            <p class="field-hint">💡 Tip: Including the job description makes questions much more specific and valuable!</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="question_count">Number of Questions</label>
+                            <select id="question_count">
+                                <option value="15">15 Questions (Quick Prep)</option>
+                                <option value="25" selected>25 Questions (Recommended)</option>
+                                <option value="35">35 Questions (Comprehensive)</option>
+                                <option value="50">50 Questions (Deep Dive)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" id="generateQuestionsBtn" class="btn-primary">
+                            <span class="btn-text">Generate Interview Questions</span>
+                            <span class="spinner" style="display: none;">⏳</span>
+                        </button>
+                    </form>
+
+                    <div id="interviewMessage" class="message" style="display: none;"></div>
+                </div>
+
+                <div id="interviewQuestionsResults" class="interview-results" style="display: none;">
+                    <!-- Questions will be dynamically populated here -->
+                </div>
+            </div>
+            
+            <div class="privacy-note">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#10B981" stroke-width="2"/>
+                    <path d="M9 12L11 14L15 10" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div>
+                    <strong>Privacy First</strong>
+                    <p>Your data is processed locally and not stored anywhere</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
