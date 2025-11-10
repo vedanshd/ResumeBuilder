@@ -260,5 +260,8 @@ def generate_interview_questions():
         return jsonify({'error': f'Interview question generation failed: {str(e)}'}), 500
 
 
+# Vercel serverless function handler
+app_handler = app
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=8080)

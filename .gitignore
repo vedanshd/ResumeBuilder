@@ -28,6 +28,8 @@ env/
 ENV/
 env.bak/
 venv.bak/
+.venv/
+.venv311/
 
 # Flask
 instance/
