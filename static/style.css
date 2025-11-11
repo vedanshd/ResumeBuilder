@@ -2353,14 +2353,20 @@ button[type="submit"]:disabled {
     padding: 32px;
     box-shadow: 0 2px 8px var(--shadow-md);
     margin-bottom: 24px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .interview-input-section {
     margin-bottom: 32px;
+    width: 100%;
 }
 
 .interview-results {
     animation: fadeIn 0.5s ease;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Question Categories */
@@ -2369,6 +2375,9 @@ button[type="submit"]:disabled {
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
+    width: 100%;
+    max-width: 100%;
+    display: block;
 }
 
 .category-header {
@@ -2407,6 +2416,9 @@ button[type="submit"]:disabled {
     border: 1px solid var(--border);
     transition: all 0.3s ease;
     cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .question-card:hover {
